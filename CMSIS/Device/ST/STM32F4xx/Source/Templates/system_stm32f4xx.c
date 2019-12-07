@@ -179,6 +179,19 @@ void SystemInit(void)
   /* Reset HSION, CSSON bits */
   RCC->CR &= ~(RCC_CR_HSION | RCC_CR_CSSON);
 
+  /* APB1 and APB2 Prescale setup */
+  RCC->CFGR |= (RCC_CFGR_PPRE2_DIV2 | RCC_CFGR_PPRE1_DIV4);
+
+  /* PLL Configuration */
+  /* ----------------- */
+
+  /* Set up flash wait-states */
+  FLASH->ACR &= ~FLASH_ACR_LATENCY;
+  FLASH->ACR |= (FLASH_ACR_LATENCY_5WS |
+                 FLASH_ACR_PRFTEN | 
+                 FLASH_ACR_ICEN |
+                 FLASH_ACR_DCEN);
+
   /* Set PLL clock source to HSE */
   RCC->PLLCFGR |= RCC_PLLCFGR_PLLSRC_HSE;
   /* Configure PLL P */
@@ -192,6 +205,7 @@ void SystemInit(void)
 
   /* Enable PLL */
   RCC->CR |= RCC_CR_PLLON;
+  while (!(RCC->CR & RCC_CR_PLLRDY));
   /* Set system clock switch to PLL*/
   RCC->CFGR |= RCC_CFGR_SW_PLL;
 
