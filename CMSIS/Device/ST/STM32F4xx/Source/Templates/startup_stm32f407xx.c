@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-#include "stm32f4xx.h"
+#include "bsp.h"
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler Function Prototype
@@ -46,15 +46,16 @@ void __NO_RETURN Reset_Handler  (void);
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
 /* Exceptions */
-void NMI_Handler            (void) __attribute__ ((weak, alias("Default_Handler")));
-void HardFault_Handler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void MemManage_Handler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void BusFault_Handler       (void) __attribute__ ((weak, alias("Default_Handler")));
-void UsageFault_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void SVC_Handler            (void) __attribute__ ((weak, alias("Default_Handler")));
-void DebugMon_Handler       (void) __attribute__ ((weak, alias("Default_Handler")));
-void PendSV_Handler         (void) __attribute__ ((weak, alias("Default_Handler")));
-void SysTick_Handler        (void) __attribute__ ((weak, alias("Default_Handler")));
+void NMI_Handler            (void);
+void HardFault_Handler      (void);
+void MemManage_Handler      (void);
+void BusFault_Handler       (void);
+void UsageFault_Handler     (void);
+
+void SVC_Handler            (void) __attribute__ ((weak, alias("Unused_Handler")));
+void DebugMon_Handler       (void) __attribute__ ((weak, alias("Unused_Handler")));
+void PendSV_Handler         (void) __attribute__ ((weak, alias("Unused_Handler")));
+void SysTick_Handler        (void) __attribute__ ((weak, alias("Unused_Handler")));
 
 void Interrupt0_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
 void Interrupt1_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
@@ -111,6 +112,48 @@ void Reset_Handler(void)
 {
   SystemInit();                             /* CMSIS System Initialization */
   __PROGRAM_START();                        /* Enter PreMain (C library entry point) */
+}
+
+/*----------------------------------------------------------------------------
+  NMI Handler 
+ *----------------------------------------------------------------------------*/
+void NMI_Handler(void) {
+    assert_failed("NMI_Handler", __LINE__);
+}
+
+/*----------------------------------------------------------------------------
+  HardFault Handler 
+ *----------------------------------------------------------------------------*/
+void HardFault_Handler(void) {
+    assert_failed("HardFault_Handler", __LINE__);
+}
+
+/*----------------------------------------------------------------------------
+  MemManage Handler 
+ *----------------------------------------------------------------------------*/
+void MemManage_Handler(void) {
+    assert_failed("MemManage_Handler", __LINE__);
+}
+
+/*----------------------------------------------------------------------------
+  BusFault Handler 
+ *----------------------------------------------------------------------------*/
+void BusFault_Handler(void) {
+    assert_failed("BusFault_Handler", __LINE__);
+}
+
+/*----------------------------------------------------------------------------
+  UsageFault Handler 
+ *----------------------------------------------------------------------------*/
+void UsageFault_Handler(void) {
+    assert_failed("UsageFault_Handler", __LINE__);
+}
+
+/*----------------------------------------------------------------------------
+  Unused Handler for Exceptions
+ *----------------------------------------------------------------------------*/
+void Unused_Handler(void) {
+    assert_failed("Unused_Handler", __LINE__);
 }
 
 /*----------------------------------------------------------------------------

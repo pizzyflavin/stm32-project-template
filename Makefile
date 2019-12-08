@@ -44,6 +44,7 @@ PROJECT        = template
 # List C source files here
 
 SRC  = ./source/main.c
+SRC += ./source/bsp.c
 SRC += ./CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
 SRC += ./CMSIS/Device/ST/STM32F4xx/Source/Templates/startup_stm32f407xx.c
 
