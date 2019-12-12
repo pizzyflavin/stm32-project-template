@@ -33,14 +33,15 @@ typedef void( *pFunc )( void );
   External References
  *----------------------------------------------------------------------------*/
 extern uint32_t __INITIAL_SP;
+extern uint32_t __STACK_LIMIT;
 
 extern __NO_RETURN void __PROGRAM_START(void);
 
 /*----------------------------------------------------------------------------
   Internal References
  *----------------------------------------------------------------------------*/
-void __NO_RETURN Default_Handler(void);
-void __NO_RETURN Reset_Handler  (void);
+__NO_RETURN void Default_Handler        (void);
+__NO_RETURN void Reset_Handler          (void);
 
 /*----------------------------------------------------------------------------
   Exception / Interrupt Handler
@@ -52,21 +53,21 @@ void MemManage_Handler      (void);
 void BusFault_Handler       (void);
 void UsageFault_Handler     (void);
 
-void SVC_Handler            (void) __attribute__ ((weak, alias("Unused_Handler")));
-void DebugMon_Handler       (void) __attribute__ ((weak, alias("Unused_Handler")));
-void PendSV_Handler         (void) __attribute__ ((weak, alias("Unused_Handler")));
-void SysTick_Handler        (void) __attribute__ ((weak, alias("Unused_Handler")));
+__NO_RETURN void SVC_Handler            (void) __attribute__ ((weak, alias("Unused_Handler")));
+__NO_RETURN void DebugMon_Handler       (void) __attribute__ ((weak, alias("Unused_Handler")));
+__NO_RETURN void PendSV_Handler         (void) __attribute__ ((weak, alias("Unused_Handler")));
+__NO_RETURN void SysTick_Handler        (void) __attribute__ ((weak, alias("Unused_Handler")));
 
-void Interrupt0_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt1_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt2_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt3_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt4_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt5_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt6_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt7_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt8_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt0_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt1_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt2_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt3_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt4_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt5_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt6_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt7_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt8_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+__NO_RETURN void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
 
 
 /*----------------------------------------------------------------------------
@@ -125,7 +126,23 @@ void NMI_Handler(void) {
   HardFault Handler 
  *----------------------------------------------------------------------------*/
 void HardFault_Handler(void) {
-    assert_failed("HardFault_Handler", __LINE__);
+    __ASM volatile (
+       "    mov r0,sp\n\t" /* Put value of stack pointer in r0 */
+       "    ldr r1,=__StackLimit\n\t"  /* Load initial SP into r1 */
+       "    cmp r0,r1\n\t" /* Perform r0 - r1 */
+       "    bcs stack_ok\n\t"
+       "    ldr r0,=__StackTop\n\t"
+       "    mov sp,r0\n\t"
+       "    ldr r0,=str_overflow\n\t"
+       "    mov r1,#1\n\t"
+       "    b assert_failed\n\t"
+       "stack_ok:\n\t"
+       "    ldr r0,=str_hardfault\n\t"
+       "    mov r1,#2\n\t"
+       "    b assert_failed\n\t"
+       "str_overflow:   .asciz \"StackOverflow\"\n\t"
+       "str_hardfault:  .asciz \"HardFault\"\n\t"
+    );
 }
 
 /*----------------------------------------------------------------------------
