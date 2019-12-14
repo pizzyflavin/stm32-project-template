@@ -47,11 +47,11 @@ __NO_RETURN void Reset_Handler          (void);
   Exception / Interrupt Handler
  *----------------------------------------------------------------------------*/
 /* Exceptions */
-void NMI_Handler            (void);
-void HardFault_Handler      (void);
-void MemManage_Handler      (void);
-void BusFault_Handler       (void);
-void UsageFault_Handler     (void);
+__NO_RETURN void NMI_Handler            (void);
+__NO_RETURN void HardFault_Handler      (void);
+__NO_RETURN void MemManage_Handler      (void);
+__NO_RETURN void BusFault_Handler       (void);
+__NO_RETURN void UsageFault_Handler     (void);
 
 __NO_RETURN void SVC_Handler            (void) __attribute__ ((weak, alias("Unused_Handler")));
 __NO_RETURN void DebugMon_Handler       (void) __attribute__ ((weak, alias("Unused_Handler")));
