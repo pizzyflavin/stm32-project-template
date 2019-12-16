@@ -41,6 +41,7 @@ extern __NO_RETURN void __PROGRAM_START(void);
   Internal References
  *----------------------------------------------------------------------------*/
 __NO_RETURN void Default_Handler        (void);
+__NO_RETURN void Unused_Handler         (void);
 __NO_RETURN void Reset_Handler          (void);
 
 /*----------------------------------------------------------------------------
@@ -53,21 +54,21 @@ __NO_RETURN void MemManage_Handler      (void);
 __NO_RETURN void BusFault_Handler       (void);
 __NO_RETURN void UsageFault_Handler     (void);
 
-__NO_RETURN void SVC_Handler            (void) __attribute__ ((weak, alias("Unused_Handler")));
-__NO_RETURN void DebugMon_Handler       (void) __attribute__ ((weak, alias("Unused_Handler")));
-__NO_RETURN void PendSV_Handler         (void) __attribute__ ((weak, alias("Unused_Handler")));
-__NO_RETURN void SysTick_Handler        (void) __attribute__ ((weak, alias("Unused_Handler")));
+void SVC_Handler            (void) __attribute__ ((weak, alias("Unused_Handler")));
+void DebugMon_Handler       (void) __attribute__ ((weak, alias("Unused_Handler")));
+void PendSV_Handler         (void) __attribute__ ((weak, alias("Unused_Handler")));
+void SysTick_Handler        (void) __attribute__ ((weak, alias("Unused_Handler")));
 
-__NO_RETURN void Interrupt0_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt1_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt2_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt3_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt4_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt5_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt6_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt7_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt8_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-__NO_RETURN void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt0_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt1_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt2_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt3_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt4_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt5_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt6_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt7_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt8_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+void Interrupt9_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
 
 
 /*----------------------------------------------------------------------------
